@@ -5,9 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const posts_route_1 = require("./app/modules/posts.route");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
+// application routes
+app.use("/api/v1/blogs", posts_route_1.BlogRoutes);
 app.get('/', (req, res) => {
     res.status(200).json({
         success: true,
@@ -16,7 +19,7 @@ app.get('/', (req, res) => {
 });
 // global error handler
 app.use((err, req, res, next) => {
-    const statusCode = 5000;
+    const statusCode = 500;
     const message = "something went wrong";
     return res.status(statusCode).json({
         success: false,
