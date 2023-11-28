@@ -34,9 +34,21 @@ const getSingleBlogs = async (req: Request, res: Response, next: NextFunction) =
     try {
         const id = Number(req.params.id);
         const result = await BlogService.getSingleBlogFromDB(id)
+
+        let message;
+        if (result && result.isDeleted === true) {
+            message = "This data is deleted";
+        } else if(result && result.isDeleted === false){
+            message = "data fetched successfully"
+        }
+        else {
+            message = "Not found anything with this id";
+        }
+
+
         res.status(200).json({
             success:true,
-            message: `Blog Found`,
+            message,
             data : result
         })
     } catch (error) {
