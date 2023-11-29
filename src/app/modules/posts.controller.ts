@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { BlogService } from "./posts.service";
+import { zodValidation } from "./posts.validation";
 
 const postBlog = async (req: Request, res: Response, next: NextFunction) =>{
     const newPost = req.body;
     try {
-        const result = await BlogService.insertBlogInDB(newPost)
+
+        const validatedData = zodValidation.parse(newPost)
+
+        const result = await BlogService.insertBlogInDB(validatedData)
         
         res.status(200).json({
             success:true,
